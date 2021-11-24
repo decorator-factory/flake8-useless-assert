@@ -20,7 +20,7 @@ def _is_call_to_format(call: ast.Call) -> bool:
     return call.func.attr == "format"
 
 
-def _detect_assert_test_with_constant(test: ast.expr) -> Optional[str]:
+def _detect_bad_assert_test_with_constant(test: ast.expr) -> Optional[str]:
     if not isinstance(test, ast.Constant):
         return None
 
@@ -44,19 +44,12 @@ def _detect_assert_test_with_formatted_string(test: ast.expr) -> Optional[str]:
         return None
 
 
-def _detect_invalid_assert_test(test: ast.expr) -> Optional[str]:
-    return (
-        _detect_assert_test_with_constant(test)
-        or _detect_assert_test_with_formatted_string(test)
-    )
-
-
-class UselessAssertVisitor(ast.NodeVisitor):
+class AssertWithConstantVisitor(ast.NodeVisitor):
     def __init__(self, callback: Callable[[FlakeDiagnostic], None]):
         self._callback = callback
 
     def visit_Assert(self, node: ast.Assert) -> None:
-        message = _detect_invalid_assert_test(node.test)
+        message = _detect_bad_assert_test_with_constant(node.test)
 
         if message is None:
             return
@@ -65,5 +58,23 @@ class UselessAssertVisitor(ast.NodeVisitor):
             line=node.lineno,
             col=node.col_offset,
             message="ULA001 {0}".format(message),
+        )
+        self._callback(diagnostic)
+
+
+class AssertWithFormattedStrVisitor(ast.NodeVisitor):
+    def __init__(self, callback: Callable[[FlakeDiagnostic], None]):
+        self._callback = callback
+
+    def visit_Assert(self, node: ast.Assert) -> None:
+        message = _detect_assert_test_with_formatted_string(node.test)
+
+        if message is None:
+            return
+
+        diagnostic = FlakeDiagnostic(
+            line=node.lineno,
+            col=node.col_offset,
+            message="ULA002 {0}".format(message),
         )
         self._callback(diagnostic)

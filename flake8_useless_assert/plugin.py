@@ -2,7 +2,7 @@ import ast
 from typing import Iterator, List
 
 from .flake_diagnostic import FlakeDiagnostic
-from .visitors import UselessAssertVisitor
+from .visitors import AssertWithConstantVisitor, AssertWithFormattedStrVisitor
 
 from .patch_const import LegacyConstantRewriter
 
@@ -18,6 +18,7 @@ class UselessAssert:
         LegacyConstantRewriter().visit(self._tree)
 
         diagnostics: List[FlakeDiagnostic] = []
-        UselessAssertVisitor(diagnostics.append).visit(self._tree)
+        AssertWithConstantVisitor(diagnostics.append).visit(self._tree)
+        AssertWithFormattedStrVisitor(diagnostics.append).visit(self._tree)
 
         yield from diagnostics
