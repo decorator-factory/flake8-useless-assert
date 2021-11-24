@@ -1,7 +1,7 @@
 import ast
 from typing import Callable, Optional
 
-from flake8_useless_assert.flake_diagnostic import FlakeDiagnostic
+from .flake_diagnostic import FlakeDiagnostic
 
 
 def _is_call_to_format(call: ast.Call) -> bool:

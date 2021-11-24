@@ -1,8 +1,8 @@
 import ast
 from typing import Iterator, List
 
-from flake8_useless_assert.flake_diagnostic import FlakeDiagnostic
-from flake8_useless_assert.useless_assert_visitor import UselessAssertVisitor
+from .flake_diagnostic import FlakeDiagnostic
+from .visitors import UselessAssertVisitor
 
 from .patch_const import LegacyConstantRewriter
 
