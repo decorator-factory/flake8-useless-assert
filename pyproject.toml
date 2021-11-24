@@ -5,6 +5,7 @@ description = "flake8 plugin to catch useless `assert` statements"
 authors = ["decorator-factory <decorator-factory@yandex.ru>"]
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/decorator-factory/flake8-useless-assert"
 
 [tool.poetry.dependencies]
 python = "^3.7"
