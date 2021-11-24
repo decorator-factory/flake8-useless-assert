@@ -20,19 +20,21 @@ def _is_call_to_format(call: ast.Call) -> bool:
     return call.func.attr == "format"
 
 
-def _detect_invalid_assert_test(test: ast.expr) -> Optional[str]:
-    # Returns a reason if the expresion is an invalid test for an assert,
-    # or `None` if it's valid
+def _detect_assert_test_with_constant(test: ast.expr) -> Optional[str]:
+    if not isinstance(test, ast.Constant):
+        return None
 
-    if isinstance(test, ast.Constant):
-        if test.value is False:
-            return None  # `assert False` is a valid idiom
+    if test.value is False:
+        return None  # `assert False` is a valid idiom
 
-        if test.value:
-            return "`assert` with a truthy value has no effect"
-        else:
-            return "`assert` with a falsey value always fails. If you want this, do `assert False`"
-    elif isinstance(test, ast.JoinedStr):
+    if test.value:
+        return "`assert` with a truthy value has no effect"
+    else:
+        return "`assert` with a falsey value always fails. If you want this, do `assert False`"
+
+
+def _detect_assert_test_with_formatted_string(test: ast.expr) -> Optional[str]:
+    if isinstance(test, ast.JoinedStr):
         return "`assert` with an f-string has no effect"
     elif isinstance(test, ast.Call):
         if not _is_call_to_format(test):
@@ -40,6 +42,13 @@ def _detect_invalid_assert_test(test: ast.expr) -> Optional[str]:
         return "`assert` with 'string'.format(...) has no effect"
     else:
         return None
+
+
+def _detect_invalid_assert_test(test: ast.expr) -> Optional[str]:
+    return (
+        _detect_assert_test_with_constant(test)
+        or _detect_assert_test_with_formatted_string(test)
+    )
 
 
 class UselessAssertVisitor(ast.NodeVisitor):
