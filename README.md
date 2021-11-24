@@ -2,17 +2,17 @@
 flake8 plugin to catch useless `assert` statements
 
 
-# Examples of what it will flag
+# Violations
 
-```py
-assert "string literal"
-assert 0x2a
-assert "call to {0}".format("format")
-assert f"f-{str}ing"
-assert True
-assert ...
-```
+| Code    | Description                      |   Example                        |
+|---------|----------------------------------|----------------------------------|
+| ULA001  | `assert` with a literal          | `assert "foo"`                   |
+|         |                                  | `assert ...`                     |
+|         |                                  | `True`                           |
+| ULA002  | `assert` with a formatted string | `assert "foo {0}".format(bar)`   |
+|         |                                  | `assert f"foo {bar}"`            |
 
+Note that `assert False` is exempt from `ULA001` because it's a common idiom.
 
 # Testing
 I haven't set up proper testing yet, but you can run `poetry install` and then:
