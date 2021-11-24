@@ -12,16 +12,16 @@ class LegacyConstantRewriter(ast.NodeTransformer):
         return const_node
 
     def visit_Num(self, node: ast.Num) -> ast.AST:
-        const_node = ast.Constant(node.n)
+        const_node = ast.Constant(value=node.n)
         ast.copy_location(const_node, node)
         return const_node
 
     def visit_NameConstant(self, node: ast.NameConstant) -> ast.AST:
-        const_node = ast.Constant(node.value)
+        const_node = ast.Constant(value=node.value)
         ast.copy_location(const_node, node)
         return const_node
 
     def visit_Ellipsis(self, node: ast.Ellipsis) -> ast.AST:
-        const_node = ast.Constant(...)
+        const_node = ast.Constant(value=...)
         ast.copy_location(const_node, node)
         return const_node
