@@ -89,7 +89,7 @@ class UselessAssertVisitor(ast.NodeVisitor):
 
 class UselessAssert:
     name = "flake8-useless-assert"
-    version = "0.1.1"
+    version = "0.1.3"
 
     def __init__(self, tree: ast.Module) -> None:
         self._tree = tree
