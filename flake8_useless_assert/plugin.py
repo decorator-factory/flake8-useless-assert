@@ -9,7 +9,7 @@ from .patch_const import LegacyConstantRewriter
 
 class UselessAssert:
     name = "flake8-useless-assert"
-    version = "0.1.3"
+    version = "0.2.0"
 
     def __init__(self, tree: ast.Module) -> None:
         self._tree = tree
