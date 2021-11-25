@@ -1,6 +1,7 @@
 # flake8-useless-assert
 flake8 plugin to catch useless `assert` statements
 
+Download or install on the [PyPI page](https://pypi.org/project/flake8-useless-assert/)
 
 # Violations
 
