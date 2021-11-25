@@ -8,3 +8,4 @@ def ula006():
     assert "foo" if True else "bar"
     assert "foo" + "bar"
     assert "hello" * (3 + 2)
+    assert repr({"foo", "bar"}) != "43"

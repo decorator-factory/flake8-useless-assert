@@ -115,6 +115,32 @@ def _detect_assert_test_with_format(test: ast.expr) -> Optional[str]:
     return "`assert` with 'literal'.format(...)"
 
 
+#: built-in functions `f` such that if `x` is a constant, `f(x)` is a constant
+_pure_function_builtins = frozenset({
+    "abs", "aiter", "all", "any", "ascii", "bin", "bool",
+    "bytearray", "bytes", "callable", "chr", "classmethod",
+    "compile", "complex", "dict", "dir", "divmod", "enumerate",
+    "filter", "float", "format", "frozenset", "getattr",
+    "hasattr", "hash", "help", "hex", "id",
+    "int", "isinstance", "issubclass", "iter",
+    "len", "list", "map", "max", "memoryview", "min",
+    "oct", "ord", "pow", "property", "range", "repr",
+    "reversed", "round", "set", "slice", "sorted", "staticmethod",
+    "str", "sum", "tuple", "type", "zip",
+})
+
+
+def _is_call_constant(call: ast.Call) -> bool:
+    if not isinstance(call.func, ast.Name):
+        return False
+
+    if call.func.id not in _pure_function_builtins:
+        return False
+
+    arg_values = call.args + [kw.value for kw in call.keywords]
+    return all(map(_is_constant, arg_values))
+
+
 def _is_constant(expr: ast.expr) -> bool:
     if isinstance(expr, ast.Constant):
         return True
@@ -139,6 +165,9 @@ def _is_constant(expr: ast.expr) -> bool:
 
     if isinstance(expr, ast.BinOp):
         return _is_constant(expr.left) and _is_constant(expr.right)
+
+    if isinstance(expr, ast.Call):
+        return _is_call_constant(expr)
 
     return False
 
