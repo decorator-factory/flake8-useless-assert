@@ -2,7 +2,7 @@ import ast
 from typing import Iterator
 
 from .flake_diagnostic import FlakeDiagnostic
-from .visitors import rules
+from .rules import rules
 
 from .patch_const import LegacyConstantRewriter
 
