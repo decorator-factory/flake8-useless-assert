@@ -1,15 +1,15 @@
 import ast
-from typing import Iterator, List
+from typing import Iterator
 
 from .flake_diagnostic import FlakeDiagnostic
-from .visitors import AssertWithConstantVisitor, AssertWithFormattedStrVisitor
+from .visitors import rules
 
 from .patch_const import LegacyConstantRewriter
 
 
 class UselessAssert:
     name = "flake8-useless-assert"
-    version = "0.3.1"
+    version = "0.4.0"
 
     def __init__(self, tree: ast.Module) -> None:
         self._tree = tree
@@ -17,8 +17,5 @@ class UselessAssert:
     def __iter__(self) -> Iterator[FlakeDiagnostic]:
         LegacyConstantRewriter().visit(self._tree)
 
-        diagnostics: List[FlakeDiagnostic] = []
-        AssertWithConstantVisitor(diagnostics.append).visit(self._tree)
-        AssertWithFormattedStrVisitor(diagnostics.append).visit(self._tree)
-
-        yield from diagnostics
+        for rule in rules:
+            yield from rule(self._tree)
