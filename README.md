@@ -14,6 +14,7 @@ Download or install on the [PyPI page](https://pypi.org/project/flake8-useless-a
 | ULA003  | `assert` with `None`                                 | `assert None`                    |
 | ULA004  | `assert` with "literal".format(...)                  | `assert "foo {0}".format(bar)`   |
 | ULA005  | `assert` with f-string                               | `assert f"foo {bar}"`            |
+| ULA006  | `assert` with constant computation                   | `assert "foo" == "bar" * 3`      |
 
 
 # Testing
