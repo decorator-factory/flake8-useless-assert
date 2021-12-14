@@ -66,7 +66,7 @@ def _detect_assert_test_with_0(test: ast.expr) -> Optional[str]:
     if not isinstance(test, ast.Constant):
         return None
 
-    if test.value != 0:
+    if test.value != 0 or test.value is False:  # NOTE: False == 0
         return None
 
     return "use `assert False` instead of `assert 0`"

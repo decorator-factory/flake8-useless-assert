@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flake8-useless-assert"
-version = "0.4.2"
+version = "0.4.3"
 description = "flake8 plugin to catch useless `assert` statements"
 authors = ["decorator-factory <decorator-factory@yandex.ru>"]
 license = "MIT"
