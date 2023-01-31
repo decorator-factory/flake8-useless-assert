@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flake8-useless-assert"
-version = "0.4.3"
+version = "0.4.4"
 description = "flake8 plugin to catch useless `assert` statements"
 authors = ["decorator-factory <decorator-factory@yandex.ru>"]
 license = "MIT"
@@ -9,7 +9,7 @@ repository = "https://github.com/decorator-factory/flake8-useless-assert"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-flake8 = ">=3.9,<5.0"
+flake8 = ">=3.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -21,5 +21,3 @@ ULA = "flake8_useless_assert:UselessAssert"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-
